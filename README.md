@@ -308,6 +308,15 @@ Proprietary Community License - see [LICENSE](LICENSE) for details.
 **Community Use**: Free for personal, research, and small business (< $100k revenue).
 **Commercial Use**: License required for larger entities and commercial SaaS products. See [LICENSING](LICENSING.md).
 
+## 🚀 Deployment
+
+To publish a new version to PyPI:
+1. Update version in `setup.py`.
+2. Create a new Release in GitHub.
+3. The GitHub Action will automatically build and publish the package.
+
+*Note: Requires `PYPI_API_TOKEN` secret in repository settings.*
+
 ## 🤝 Contributing
 
 Contributions welcome! Please read our [Contributing Guide](CONTRIBUTING.md).
