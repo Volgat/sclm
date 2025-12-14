@@ -8,7 +8,7 @@ with open("README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
-    name="sclm",
+    name="saclm",
     version="1.0.0",
     author="Mike Amega",
     author_email="contact@amewebstudio.com",

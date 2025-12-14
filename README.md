@@ -30,7 +30,7 @@
 ## 🚀 Installation
 
 ```bash
-pip install sclm
+pip install saclm
 ```
 
 Or from source:

@@ -10,7 +10,7 @@ License: Proprietary (See LICENSE)
 Repository: https://github.com/Volgat/sclm
 
 Installation:
-    pip install sclm
+    pip install saclm
 
 Quick Start:
     from sclm import SCLM, SCLMConfig
