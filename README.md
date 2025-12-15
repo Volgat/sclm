@@ -1,6 +1,10 @@
 # SCLM: Stateful Coherent Language Models
 
 <p align="center">
+  <img src="assets/sclm_banner.png" alt="SCLM Banner" width="100%">
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/version-1.0.0-blue" alt="Version">
   <img src="https://img.shields.io/badge/python-3.8+-green" alt="Python">
   <img src="https://img.shields.io/badge/pytorch-1.10+-red" alt="PyTorch">
