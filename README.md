@@ -1,4 +1,4 @@
-# SCLM: Stateful Coherent Language Models
+# SCLM: Stateful Coherent Language Models Architecture
 
 <p align="center">
   <img src="assets/sclm_banner.png" alt="SCLM Banner" width="100%">
