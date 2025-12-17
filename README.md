@@ -1,7 +1,8 @@
 # 🧠 SCLM: Stateful Coherent Language Model
 
 [![PyPI version](https://badge.fury.io/py/saclm.svg)](https://badge.fury.io/py/saclm)
-[![License: BSL-1.1](https://img.shields.io/badge/License-BSL--1.1-blue.svg)](LICENSE)
+[![SCLM License](assets/sclm_license_badge.png)](LICENSE)
+[![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-yellow)](https://huggingface.co/Volgat/sclm)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
 **SCLM** adds **persistent latent memory** to transformer language models, enabling better coherence across long conversations and multi-turn generation.
@@ -54,9 +55,9 @@ pip install saclm[full]
 ```python
 from sclm import SCLMModel
 
-# Load model with memory
+# Load SCLM model from Hugging Face
 model = SCLMModel.from_pretrained(
-    "mistralai/Mistral-7B-v0.1",
+    "Volgat/sclm",     # Pre-trained SCLM model
     load_in_4bit=True  # Optional: 4-bit quantization
 )
 
@@ -76,6 +77,8 @@ print(output)
 ## 📊 Architecture: EARCP
 
 SCLM uses the **EARCP** architecture (patent pending):
+
+![SCLM Architecture](assets/sclm_architecture_new.png)
 
 ```
 EARCP = Encapsulation + Alignment + Revision + Coherence + Propagation
@@ -256,9 +259,9 @@ pip install saclm
 ```python
 from sclm import SCLMModel
 
-# Charger le modèle avec mémoire
+# Charger le modèle SCLM depuis Hugging Face
 model = SCLMModel.from_pretrained(
-    "mistralai/Mistral-7B-v0.1",
+    "Volgat/sclm",
     load_in_4bit=True
 )
 
