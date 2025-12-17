@@ -5,7 +5,7 @@
 [![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-yellow)](https://huggingface.co/amewebstudio/ananke-sclm)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-**SCLM** adds **persistent latent memory** to transformer  models, enabling better coherence across long conversations and multi-turn generation.
+**SCLM** is architecture who adds **persistent latent memory** to transformer  models, enabling better coherence across long conversations and multi-turn generation.
 
 [📖 Documentation](https://sclm.readthedocs.io) | [🇫🇷 Version Française](#-documentation-française) | [📝 Paper](docs/paper.md) | [💼 Commercial Licensing](#-licensing)
 
