@@ -1,25 +1,42 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
-SCLM: Stateful Coherent Language Models
+SCLM - Stateful Coherent Language Model
+=======================================
+
+Proprietary Software - Dual License Model
+Copyright (c) 2025 Mike Amega (Ame Web Studio)
+
+See LICENSE for details.
 """
 
 from setuptools import setup, find_packages
+from pathlib import Path
 
-with open("README.md", "r", encoding="utf-8") as f:
-    long_description = f.read()
+# Read README
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text(encoding="utf-8")
+
+# Read version
+version = "2.0.0"
 
 setup(
     name="saclm",
-    version="1.0.0",
+    version=version,
     author="Mike Amega",
-    author_email="contact@amewebstudio.com",
-    description="Stateful Coherent Language Models - Transformers with persistent memory",
+    author_email="info@amewebstudio.com",
+    description="SCLM: Stateful Coherent Language Model - Persistent memory for transformers",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Volgat/sclm",
     project_urls={
         "Bug Tracker": "https://github.com/Volgat/sclm/issues",
-        "Documentation": "https://github.com/Volgat/sclm#readme",
-        "Paper": "https://arxiv.org/abs/2512.XXXXX",
+        "Documentation": "https://sclm.readthedocs.io",
+        "Commercial Licensing": "mailto:info@amewebstudio.com",
+    },
+    packages=find_packages(exclude=["tests", "tests.*", "examples", "notebooks"]),
+    package_data={
+        "sclm": ["py.typed"],
     },
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -32,35 +49,45 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "Topic :: Text Processing :: Linguistic",
     ],
-    packages=find_packages(),
     python_requires=">=3.8",
     install_requires=[
-        "torch>=1.10.0",
-        "numpy>=1.19.0",
+        "torch>=2.0.0",
+        "transformers>=4.35.0",
+        "accelerate>=0.20.0",
+        "safetensors>=0.3.0",
+        "huggingface-hub>=0.16.0",
     ],
     extras_require={
         "dev": [
-            "pytest>=6.0",
-            "pytest-cov>=2.0",
-            "black>=22.0",
-            "isort>=5.0",
-            "flake8>=4.0",
+            "pytest>=7.0.0",
+            "pytest-cov>=4.0.0",
+            "black>=23.0.0",
+            "isort>=5.12.0",
+            "flake8>=6.0.0",
+            "mypy>=1.0.0",
         ],
-        "transformers": [
-            "transformers>=4.20.0",
+        "quantization": [
+            "bitsandbytes>=0.41.0",
+        ],
+        "full": [
+            "bitsandbytes>=0.41.0",
+            "sentencepiece>=0.1.99",
+            "protobuf>=3.20.0",
+        ],
+    },
+    entry_points={
+        "console_scripts": [
+            "sclm=sclm.cli:main",
         ],
     },
     keywords=[
-        "language model",
-        "transformer",
-        "stateful",
-        "coherence",
-        "memory",
-        "nlp",
-        "deep learning",
-        "pytorch",
+        "nlp", "transformers", "language-model", "memory", 
+        "stateful", "coherence", "earcp", "deep-learning", 
+        "pytorch", "huggingface"
     ],
+    zip_safe=False,
 )

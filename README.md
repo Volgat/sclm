@@ -1,332 +1,325 @@
-# SCLM: Stateful Coherent Language Models Architecture
+# 🧠 SCLM: Stateful Coherent Language Model
 
-<p align="center">
-  <img src="assets/sclm_banner.png" alt="SCLM Banner" width="100%">
-</p>
+[![PyPI version](https://badge.fury.io/py/saclm.svg)](https://badge.fury.io/py/saclm)
+[![License: BSL-1.1](https://img.shields.io/badge/License-BSL--1.1-blue.svg)](LICENSE)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-<p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.0-blue" alt="Version">
-  <img src="https://img.shields.io/badge/python-3.8+-green" alt="Python">
-  <img src="https://img.shields.io/badge/pytorch-1.10+-red" alt="PyTorch">
-  <img src="https://img.shields.io/badge/license-Proprietary-red" alt="License">
-</p>
+**SCLM** adds **persistent latent memory** to transformer language models, enabling better coherence across long conversations and multi-turn generation.
 
-**SCLM** is a PyTorch library for building language models with **persistent latent state** and **multi-expert coherence mechanisms**. Unlike standard transformers that process each sequence independently, SCLM maintains continuous memory across generation steps.
+[📖 Documentation](https://sclm.readthedocs.io) | [🇫🇷 Version Française](#-documentation-française) | [📝 Paper](docs/paper.md) | [💼 Commercial Licensing](#-licensing)
 
-## 🎯 Key Features
+---
 
-| Feature | Description |
-|---------|-------------|
-| **Persistent State** | Maintains latent state across generation with variance < 10⁻⁷ |
-| **Coherence Mechanism** | Multi-expert system that promotes consistent representations |
-| **Edit Mode** | Local modifications without global semantic drift |
-| **Drop-in Replacement** | Compatible with standard transformer training pipelines |
+## ⚖️ Licensing
 
-## 📊 Experimental Results
+**SCLM is Proprietary Software** under a dual-licensing model.
 
-| Metric | Result |
-|--------|--------|
-| State Persistence | variance < 10⁻⁷ ✅ |
-| Coherence Preservation | 104.7% ✅ |
-| Local Editing Drift | 0.3% ✅ |
-| Entity Preservation | 100% ✅ |
+### 🆓 Free for:
+- ✅ Personal & hobbyist projects
+- ✅ Academic research (non-profit)
+- ✅ Small businesses (revenue < $100,000 USD/year)
 
-## 🚀 Installation
+### 💼 Commercial License Required for:
+- ❗ Organizations with revenue > $100,000 USD/year
+- ❗ SaaS products (any revenue)
+- ❗ Redistribution in proprietary products
+
+📧 **Contact:** [info@amewebstudio.com](mailto:info@amewebstudio.com)
+
+---
+
+## ✨ Features
+
+- 🧠 **Persistent Memory**: State that evolves across conversation turns
+- 🎯 **Entity Coherence**: Maintains context about characters, places, objects
+- ✏️ **Edit Mode**: Make local changes without affecting global memory
+- ⚡ **Lightweight**: Only ~2-5% additional parameters (EARCP architecture)
+- 🔌 **Easy Integration**: Works with any HuggingFace transformer
+
+## 📦 Installation
+
+```bash
+# Basic installation
+pip install saclm
+
+# With quantization support
+pip install saclm[quantization]
+
+# Full installation (all features)
+pip install saclm[full]
+```
+
+## 🚀 Quick Start
+
+```python
+from sclm import SCLMModel
+
+# Load model with memory
+model = SCLMModel.from_pretrained(
+    "mistralai/Mistral-7B-v0.1",
+    load_in_4bit=True  # Optional: 4-bit quantization
+)
+
+# Start new conversation
+model.reset_state()
+
+# Build context
+model.add_context("The wizard Elara lives in Silverwood forest.")
+model.add_context("Her familiar is a silver cat named Nimbus.")
+
+# Generate with memory - entities are remembered!
+output = model.generate("One day, Elara decided to", max_new_tokens=50)
+print(output)
+# "One day, Elara decided to take Nimbus on a journey through Silverwood..."
+```
+
+## 📊 Architecture: EARCP
+
+SCLM uses the **EARCP** architecture (patent pending):
+
+```
+EARCP = Encapsulation + Alignment + Revision + Coherence + Propagation
+```
+
+| Component | Function |
+|-----------|----------|
+| **Encapsulation** | GRU-style state update from hidden states |
+| **Alignment** | Cross-attention between state and hidden layers |
+| **Revision** | Drift detection and correction |
+| **Coherence** | Mixture-of-Experts for consistency |
+| **Propagation** | State injection into transformer layers |
+
+```
+┌─────────────────┐
+│  Hidden States  │
+└────────┬────────┘
+         │
+    ┌────┴────┐
+    ▼         ▼
+┌───────┐ ┌───────┐
+│Encaps.│ │Inject │
+└───┬───┘ └───────┘
+    │
+    ▼
+┌───────────┐
+│  Latent   │
+│   State   │───────► Persists across turns
+└───────────┘
+```
+
+## 💡 Use Cases
+
+### Interactive Fiction
+```python
+model.reset_state()
+
+# Build story world
+model.add_context("The kingdom of Eldoria was ruled by Queen Lyra.")
+model.add_context("The royal advisor Marcus had served for decades.")
+
+# Characters persist in memory
+output = model.generate("Marcus approached the throne and said")
+# Marcus and Queen Lyra are remembered correctly
+```
+
+### Long Conversations
+```python
+# Memory persists without growing context window
+for turn in conversation_turns:
+    model.add_context(turn)
+
+# Generate response with all context in memory
+response = model.generate("Based on our discussion,")
+```
+
+### Creative Writing
+```python
+# Chapter 1
+model.add_context("Chapter 1: Sarah discovered an old map in the attic.")
+
+# Chapter 2 - Sarah is remembered
+output = model.generate("Chapter 2: The next morning, Sarah")
+```
+
+## ⚙️ Configuration
+
+```python
+from sclm import SCLMConfig
+
+# Custom configuration
+config = SCLMConfig(
+    latent_state_dim=256,        # State vector dimension
+    n_experts=2,                  # Number of MoE experts
+    state_injection_layers=[8, 16],  # Which layers to inject
+    alpha_inject=0.02,            # Injection strength
+)
+
+# Use with model
+model = SCLMModel.from_pretrained("model-name", config=config)
+```
+
+### Presets
+
+```python
+from sclm.config import get_preset
+
+# Use optimized presets
+config = get_preset("mistral-7b")  # or "llama-7b", "phi-2", "tiny"
+```
+
+## 📖 API Reference
+
+### SCLMModel
+
+| Method | Description |
+|--------|-------------|
+| `from_pretrained(name)` | Load model from HuggingFace |
+| `reset_state()` | Reset memory for new conversation |
+| `add_context(text)` | Add context to memory |
+| `generate(prompt)` | Generate text with memory |
+| `freeze_state()` | Freeze memory for editing |
+| `save_checkpoint(path)` | Save model checkpoint |
+
+### Properties
+
+| Property | Description |
+|----------|-------------|
+| `state_norm` | Current state vector norm |
+| `state` | Current state tensor |
+
+## 🔬 Benchmarks
+
+| Model | EARCP Params | Overhead | Entity Retention |
+|-------|--------------|----------|------------------|
+| Mistral-7B | 91.7M | 2.4% | 85% |
+| LLaMA-7B | 91.7M | 2.4% | 83% |
+| Phi-2 | 52.3M | 1.9% | 81% |
+
+## 🛠️ Advanced Usage
+
+### Edit Mode
+```python
+# Establish context
+model.add_context("The sword was blue and ancient.")
+
+# Make edit without changing memory
+model.freeze_state()
+output = model.generate("The sword was RED")  # State unchanged
+model.unfreeze_state()
+```
+
+### Memory Tracking
+```python
+from sclm.utils import MemoryTracker
+
+tracker = MemoryTracker(model)
+tracker.add("Context 1")
+tracker.add("Context 2")
+output = tracker.generate("Prompt")
+
+print(tracker.summary())
+tracker.plot_state_evolution()  # Visualize state changes
+```
+
+---
+
+# 🇫🇷 Documentation Française
+
+## Qu'est-ce que SCLM ?
+
+**SCLM** (Stateful Coherent Language Model) ajoute une **mémoire latente persistante** aux modèles de langage transformers, permettant une meilleure cohérence dans les longues conversations.
+
+## ⚖️ Licence
+
+**SCLM est un logiciel propriétaire** sous un modèle de double licence.
+
+### 🆓 Gratuit pour :
+- ✅ Projets personnels et hobbyistes
+- ✅ Recherche académique (non lucratif)
+- ✅ Petites entreprises (revenus < 100 000 $ USD/an)
+
+### 💼 Licence commerciale requise pour :
+- ❗ Organisations avec revenus > 100 000 $ USD/an
+- ❗ Produits SaaS (tout revenu)
+- ❗ Redistribution dans des produits propriétaires
+
+📧 **Contact :** [info@amewebstudio.com](mailto:info@amewebstudio.com)
+
+## Installation
 
 ```bash
 pip install saclm
 ```
 
-Or from source:
-
-```bash
-git clone https://github.com/Volgat/sclm.git
-cd sclm
-pip install -e .
-```
-
-## 📖 Quick Start
-
-### Basic Usage
+## Démarrage Rapide
 
 ```python
-from sclm import SCLM, SCLMConfig
+from sclm import SCLMModel
 
-# Create configuration
-config = SCLMConfig(
-    vocab_size=50257,
-    n_layers=6,
-    n_heads=8,
-    d_model=512
+# Charger le modèle avec mémoire
+model = SCLMModel.from_pretrained(
+    "mistralai/Mistral-7B-v0.1",
+    load_in_4bit=True
 )
 
-# Create model
-model = SCLM(config)
-
-# Forward pass
-import torch
-input_ids = torch.randint(0, 50257, (1, 64))
-output = model(input_ids)
-
-logits = output['logits']  # [batch, seq_len, vocab_size]
-metrics = output['global_metrics']  # coherence, alignment, etc.
-```
-
-### Text Generation
-
-```python
-# Generate text
-prompt = torch.tensor([[1, 2, 3, 4, 5]])  # Your tokenized prompt
-generated = model.generate(
-    prompt,
-    max_new_tokens=100,
-    temperature=0.8,
-    top_k=50
-)
-```
-
-### Edit Mode (Key Feature!)
-
-```python
-# Process original text
-original_ids = tokenizer.encode("The sword was blue.", return_tensors='pt')
+# Nouvelle conversation
 model.reset_state()
-_ = model(original_ids)
 
-# Freeze state
-model.freeze_state()
+# Construire le contexte
+model.add_context("Le sorcier Élara vit dans la forêt de Boisargent.")
+model.add_context("Son familier est un chat argenté nommé Nimbus.")
 
-# Process edited text - coherence preserved!
-edited_ids = tokenizer.encode("The sword was red.", return_tensors='pt')
-output = model(edited_ids, edit_mode=True)
-
-# Check coherence preservation
-print(f"Coherence: {output['global_metrics']['coherence']}")
-
-# Unfreeze when done
-model.unfreeze_state()
+# Générer avec mémoire
+output = model.generate("Un jour, Élara décida de", max_new_tokens=50)
+print(output)
 ```
 
-## 🏗️ Architecture
+## Architecture EARCP
 
-SCLM introduces the **EARCP Layer** - a five-stage pipeline integrated into transformer blocks:
+| Composant | Fonction |
+|-----------|----------|
+| **Encapsulation** | Mise à jour de l'état style GRU |
+| **Alignement** | Cross-attention état ↔ hidden |
+| **Révision** | Détection et correction de dérive |
+| **Cohérence** | Mixture d'Experts (MoE) |
+| **Propagation** | Injection dans les couches |
 
-```
-Input Hidden States
-        ↓
-┌───────────────────┐
-│  E - Encapsulation │  Create/update persistent state
-└─────────┬─────────┘
-          ↓
-┌───────────────────┐
-│  A - Alignment    │  Measure hidden-state consistency
-└─────────┬─────────┘
-          ↓
-┌───────────────────┐
-│  R - Revision     │  Correct semantic drift
-└─────────┬─────────┘
-          ↓
-┌───────────────────┐
-│  C - Coherence    │  Multi-expert processing
-└─────────┬─────────┘
-          ↓
-┌───────────────────┐
-│  P - Propagation  │  Inject state into deeper layers
-└─────────┬─────────┘
-          ↓
-    Output Hidden States
-```
+---
 
-### Components
-
-| Module | Purpose |
-|--------|---------|
-| `EncapsulationModule` | GRU-style state management |
-| `AlignmentModule` | Cross-attention consistency |
-| `RevisionModule` | Drift detection & correction |
-| `CoherenceModule` | Multi-expert ensemble |
-| `PropagationModule` | Layer-wise state injection |
-
-## 📐 Configuration Options
-
-```python
-@dataclass
-class SCLMConfig:
-    # Model architecture
-    vocab_size: int = 50257
-    max_seq_length: int = 512
-    n_layers: int = 6
-    n_heads: int = 8
-    d_model: int = 512
-    d_ff: int = 2048
-    dropout: float = 0.1
-    
-    # SCLM-specific
-    latent_state_dim: int = 256    # State dimension
-    n_coherence_heads: int = 4     # Coherence attention heads
-    n_experts: int = 4             # Number of experts
-    propagation_depth: int = 3     # Propagation adapters
-    
-    # EARCP parameters
-    eta_s: float = 5.0             # Coherence sensitivity
-    w_min: float = 0.05            # Minimum expert weight
-    
-    # Layer placement
-    earcp_every_n_layers: int = 2  # EARCP every N layers
-    use_global_earcp: bool = True  # Global EARCP layer
-```
-
-## 🔧 Pre-built Models
-
-```python
-from sclm import create_sclm_small, create_sclm_medium, create_sclm_large
-
-# ~45M parameters
-model_small = create_sclm_small()
-
-# ~125M parameters  
-model_medium = create_sclm_medium()
-
-# ~350M parameters
-model_large = create_sclm_large()
-```
-
-## 📊 Training Example
-
-```python
-from sclm import SCLM, SCLMConfig
-import torch
-import torch.nn as nn
-
-# Setup
-config = SCLMConfig(vocab_size=50257)
-model = SCLM(config).cuda()
-optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
-
-# Training loop
-for batch in dataloader:
-    input_ids, labels = batch
-    input_ids, labels = input_ids.cuda(), labels.cuda()
-    
-    # Reset state for each sequence
-    model.reset_state()
-    
-    # Forward
-    output = model(input_ids, labels=labels)
-    loss = output['loss']
-    
-    # Backward
-    optimizer.zero_grad()
-    loss.backward()
-    optimizer.step()
-    
-    # Log metrics
-    metrics = output['global_metrics']
-    print(f"Loss: {loss.item():.4f}, Coherence: {metrics['coherence']:.4f}")
-```
-
-## 🧪 Knowledge Distillation
-
-```python
-from transformers import GPT2LMHeadModel
-
-# Teacher model
-teacher = GPT2LMHeadModel.from_pretrained('gpt2-large')
-teacher.eval()
-
-# Student (SCLM)
-student = SCLM(config)
-
-# Distillation training
-T = 2.0  # Temperature
-alpha = 0.5  # Distillation weight
-
-for batch in dataloader:
-    input_ids, labels = batch
-    
-    # Student forward
-    student.reset_state()
-    student_out = student(input_ids, labels)
-    lm_loss = student_out['loss']
-    
-    # Teacher forward
-    with torch.no_grad():
-        teacher_logits = teacher(input_ids).logits
-    
-    # Distillation loss
-    student_soft = F.log_softmax(student_out['logits'] / T, dim=-1)
-    teacher_soft = F.softmax(teacher_logits / T, dim=-1)
-    distill_loss = F.kl_div(student_soft, teacher_soft, reduction='batchmean') * T * T
-    
-    # Combined loss
-    loss = (1 - alpha) * lm_loss + alpha * distill_loss
-    loss.backward()
-```
-
-## 📈 Metrics
-
-Access detailed metrics after forward pass:
-
-```python
-output = model(input_ids)
-
-# Global EARCP metrics
-global_metrics = output['global_metrics']
-print(f"Coherence: {global_metrics['coherence']:.4f}")
-print(f"Alignment: {global_metrics['alignment'].mean():.4f}")
-print(f"Drift: {global_metrics['drift'].mean():.4f}")
-print(f"State Norm: {global_metrics['state_norm']:.4f}")
-print(f"Expert Weights: {global_metrics['weights']}")
-
-# Per-block metrics
-for i, block_metrics in enumerate(output['block_metrics']):
-    print(f"Block {i}: coherence={block_metrics['coherence']:.4f}")
-```
-
-## 🔬 Research Applications
-
-SCLM is designed for:
-
-- **Long-form generation** with consistent characters and facts
-- **Document editing** with local changes and global coherence
-- **Multi-turn dialogue** with persistent context
-- **Story generation** with entity tracking
-- **Code generation** with variable consistency
-
-## 📄 Citation
+## 📝 Citation
 
 ```bibtex
 @article{amega2025sclm,
-  title={SCLM: Stateful Coherent Language Models},
+  title={SCLM: Stateful Coherent Language Models with EARCP Architecture},
   author={Amega, Mike},
-  journal={arXiv preprint},
   year={2025},
-  note={github.com/Volgat/sclm}
+  note={Ame Web Studio - Proprietary}
 }
 ```
 
-## 📜 License
+## 📄 License
 
-Proprietary Community License - see [LICENSE](LICENSE) for details.
+**Business Source License 1.1 (BSL-1.1)** - See [LICENSE](LICENSE) for details.
 
-**Community Use**: Free for personal, research, and small business (< $100k revenue).
-**Commercial Use**: License required for larger entities and commercial SaaS products. See [LICENSING](LICENSING.md).
+Copyright (c) 2025 Mike Amega (Ame Web Studio). All Rights Reserved.
 
-## 🚀 Deployment
+## 👤 Author
 
-To publish a new version to PyPI:
-1. Update version in `setup.py`.
-2. Create a new Release in GitHub.
-3. The GitHub Action will automatically build and publish the package.
+**Mike Amega** - Ame Web Studio  
+📧 [info@amewebstudio.com](mailto:info@amewebstudio.com)  
+🔗 [github.com/Volgat](https://github.com/Volgat)
 
-*Note: Requires `PYPI_API_TOKEN` secret in repository settings.*
+---
 
-## 🤝 Contributing
+## 💼 Commercial Licensing
 
-Contributions welcome! Please read our [Contributing Guide](CONTRIBUTING.md).
+For commercial licensing inquiries, enterprise support, or custom development:
 
-## 📧 Contact
+📧 **Email:** [info@amewebstudio.com](mailto:info@amewebstudio.com)
 
-- **Author**: Mike Amega
-- **Email**: contact@amewebstudio.com
-- **GitHub**: [@Volgat](https://github.com/Volgat)
+### Commercial Benefits:
+- ✅ Legal compliance for enterprise use
+- ✅ Priority technical support
+- ✅ Right to redistribute
+- ✅ Warranty and indemnification
+- ✅ Custom feature development
