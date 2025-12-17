@@ -41,7 +41,7 @@ Author: Mike Amega (Ame Web Studio)
 License: BSL-1.1 (Business Source License)
 """
 
-__version__ = "2.0.0"
+__version__ = "0.1.1"
 __author__ = "Mike Amega"
 __email__ = "info@amewebstudio.com"
 __license__ = "BSL-1.1"

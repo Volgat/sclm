@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "saclm"
-version = "2.0.0"
+version = "0.1.1"
 description = "SCLM: Stateful Coherent Language Model - Persistent memory for transformers"
 readme = "README.md"
 license = {text = "BSL-1.1"}

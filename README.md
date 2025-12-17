@@ -2,7 +2,7 @@
 
 [![PyPI version](https://badge.fury.io/py/saclm.svg)](https://badge.fury.io/py/saclm)
 [![SCLM License](assets/sclm_license_badge.png)](LICENSE)
-[![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-yellow)](https://huggingface.co/Volgat/sclm)
+[![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-yellow)](https://huggingface.co/amewebstudio/ananke-sclm)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
 **SCLM** adds **persistent latent memory** to transformer language models, enabling better coherence across long conversations and multi-turn generation.
@@ -57,7 +57,7 @@ from sclm import SCLMModel
 
 # Load SCLM model from Hugging Face
 model = SCLMModel.from_pretrained(
-    "Volgat/sclm",     # Pre-trained SCLM model
+    "amewebstudio/ananke-sclm",     # Pre-trained SCLM model
     load_in_4bit=True  # Optional: 4-bit quantization
 )
 
@@ -261,7 +261,7 @@ from sclm import SCLMModel
 
 # Charger le modèle SCLM depuis Hugging Face
 model = SCLMModel.from_pretrained(
-    "Volgat/sclm",
+    "amewebstudio/ananke-sclm",
     load_in_4bit=True
 )
 

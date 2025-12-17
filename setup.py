@@ -18,7 +18,7 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 # Read version
-version = "2.0.0"
+version = "0.1.1"
 
 setup(
     name="saclm",
