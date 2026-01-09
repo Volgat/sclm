@@ -25,7 +25,7 @@
 - ❗ SaaS products (any revenue)
 - ❗ Redistribution in proprietary products
 
-📧 **Contact:** [info@amewebstudio.com](mailto:info@amewebstudio.com)
+📧 **Contact:** [amewebstudio35@gmail.com](mailto:amewebstudio35@gmail.com)
 
 ---
 
