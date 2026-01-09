@@ -29,7 +29,7 @@ By contributing to this project, you agree that your contributions will become t
 
 **Note:** Due to the proprietary nature of SCLM, code contributions require signing a Contributor License Agreement (CLA).
 
-Contact [info@amewebstudio.com](mailto:info@amewebstudio.com) before submitting substantial contributions.
+Contact [amewebstudio35@gmail.com](mailto:amewebstudio35@gmail.com) before submitting substantial contributions.
 
 ## Development Setup
 
@@ -57,7 +57,7 @@ pytest tests/ -v
 
 ## Questions?
 
-📧 Email: [info@amewebstudio.com](mailto:info@amewebstudio.com)
+📧 Email: [amewebstudio35@gmail.com](mailto:amewebstudio35@gmail.com)
 
 ---
 
@@ -80,7 +80,7 @@ En contribuant à ce projet, vous acceptez que vos contributions deviennent la p
 
 **Note:** Les contributions de code nécessitent la signature d'un CLA.
 
-Contactez [info@amewebstudio.com](mailto:info@amewebstudio.com) avant de soumettre des contributions substantielles.
+Contactez [amewebstudio35@gmail.com](mailto:amewebstudio35@gmail.com) avant de soumettre des contributions substantielles.
 
 ---
 
