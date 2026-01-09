@@ -246,7 +246,7 @@ tracker.plot_state_evolution()  # Visualize state changes
 - ❗ Produits SaaS (tout revenu)
 - ❗ Redistribution dans des produits propriétaires
 
-📧 **Contact :** [info@amewebstudio.com](mailto:info@amewebstudio.com)
+📧 **Contact :** [amewebstudio35@gmail.com](mailto:amewebstudio35@gmail.com)
 
 ## Installation
 
@@ -309,7 +309,7 @@ Copyright (c) 2025 Mike Amega (Ame Web Studio). All Rights Reserved.
 ## 👤 Author
 
 **Mike Amega** - Ame Web Studio  
-📧 [info@amewebstudio.com](mailto:info@amewebstudio.com)  
+📧 [info@amewebstudio.com](mailto:amewebstudio35@gmail.com)  
 🔗 [github.com/Volgat](https://github.com/Volgat)
 
 ---
@@ -318,7 +318,7 @@ Copyright (c) 2025 Mike Amega (Ame Web Studio). All Rights Reserved.
 
 For commercial licensing inquiries, enterprise support, or custom development:
 
-📧 **Email:** [info@amewebstudio.com](mailto:info@amewebstudio.com)
+📧 **Email:** [info@amewebstudio.com](mailto:amewebstudio35@gmail.com)
 
 ### Commercial Benefits:
 - ✅ Legal compliance for enterprise use
