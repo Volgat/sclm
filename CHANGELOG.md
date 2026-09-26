@@ -5,6 +5,30 @@ All notable changes to SCLM will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] - 2026-09-26
+
+### Fixed
+- Removed the incorrect `License :: OSI Approved :: MIT License` classifier from
+  `pyproject.toml`. SCLM is BSL-1.1 (proprietary, dual-licensed), never MIT — this
+  classifier is what PyPI renders as the package's displayed license, so it was
+  showing the wrong license on the PyPI page. Now consistent with `setup.py` /
+  `setup.cfg` (`Other/Proprietary License`).
+- `docs/paper.md` incorrectly stated "MIT License" in its footer and referenced a
+  stale `pip install sclm` command and a non-existent `sclm-mistral-7b` HuggingFace
+  repo in Appendix B. Corrected to BSL-1.1, `pip install saclm`, and
+  `amewebstudio/ananke-sclm`.
+
+### Changed
+- **Copyright and authorship moved from Mike Amega (Ame Web Studio) to AMEFORGE**
+  across `LICENSE`, `LICENSING.md`, `README.md`, `docs/paper.md`, `setup.py`,
+  `setup.cfg`, `pyproject.toml`, and `sclm/__init__.py`. Mike Amega remains the
+  named signatory/author; AMEFORGE is now the copyright holder and package author
+  of record, matching the attribution used on ameforge.tech.
+- README Quick Start now clarifies that `amewebstudio/ananke-sclm` is a pre-trained
+  demo checkpoint, not a requirement — `from_pretrained()` works with any
+  HuggingFace causal LM, but a freshly-wrapped model gets an untrained PACER module
+  that needs fine-tuning before the coherence benefit appears.
+
 ## [0.1.2] - 2026-09-26
 
 ### Changed

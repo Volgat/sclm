@@ -5,7 +5,7 @@ SCLM - Stateful Coherent Language Model
 =======================================
 
 Proprietary Software - Dual License Model
-Copyright (c) 2025 Mike Amega (Ame Web Studio)
+Copyright (c) 2025 AMEFORGE
 
 See LICENSE for details.
 """
@@ -18,12 +18,12 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 # Read version
-version = "0.1.2"
+version = "0.1.3"
 
 setup(
     name="saclm",
     version=version,
-    author="Mike Amega",
+    author="AMEFORGE",
     author_email="info@amewebstudio.com",
     description="SCLM: Stateful Coherent Language Model - Persistent memory for transformers",
     long_description=long_description,

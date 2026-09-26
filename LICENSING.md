@@ -1,6 +1,6 @@
 # SCLM Licensing & Commercial Usage
 
-The SCLM (Stateful Coherent Language Models) library is **Proprietary Software** developed by Mike Amega. It is available under a **dual-licensing model** to support both the community and sustainable commercial development.
+The SCLM (Stateful Coherent Language Models) library is **Proprietary Software** developed by AMEFORGE. It is available under a **dual-licensing model** to support both the community and sustainable commercial development.
 
 ## 1. Community License (Free)
 
@@ -25,5 +25,5 @@ A **Commercial License** is required if:
 
 To obtain a commercial license, please contact:
 
-**Mike Amega**  
+**AMEFORGE**  
 Email: [contact@amewebstudio.com](mailto:contact@amewebstudio.com)

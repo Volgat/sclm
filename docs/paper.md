@@ -1,7 +1,7 @@
 # SCLM: Stateful Coherent Language Models with PACER Architecture
 
 **Mike Amega**  
-Ame Web Studio  
+AMEFORGE  
 December 2025
 
 ---
@@ -372,10 +372,10 @@ SCLMConfig(
 ## Appendix B: Code Availability
 
 The SCLM library is available at:
-- **PyPI**: `pip install sclm`
+- **PyPI**: `pip install saclm`
 - **GitHub**: https://github.com/Volgat/sclm
-- **HuggingFace**: https://huggingface.co/amewebstudio/sclm-mistral-7b
+- **HuggingFace**: https://huggingface.co/amewebstudio/ananke-sclm
 
 ---
 
-*© 2025 Mike Amega, Ame Web Studio. MIT License.*
+*© 2025 AMEFORGE. Business Source License 1.1 (BSL-1.1) — see [LICENSE](../LICENSE).*

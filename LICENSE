@@ -1,6 +1,6 @@
 SCLM Business Source License 1.1
 
-Copyright (c) 2025 Mike Amega (Ame Web Studio)
+Copyright (c) 2025 AMEFORGE
 All Rights Reserved.
 
 ================================================================================
@@ -8,7 +8,7 @@ SCLM LICENSING & COMMERCIAL USAGE
 ================================================================================
 
 The SCLM (Stateful Coherent Language Model Architecture) library is 
-**Proprietary Software** developed by Mike Amega. It is available under a 
+**Proprietary Software** developed by AMEFORGE. It is available under a
 **dual-licensing model** to support both the community and sustainable 
 commercial development.
 
@@ -67,8 +67,8 @@ Commercial License Benefits:
 3.1 INTELLECTUAL PROPERTY
 
 The Software, including all modifications, enhancements, derivative works, and 
-associated documentation, remains the exclusive property of Mike Amega / Ame 
-Web Studio. This License does not grant you any rights to trademarks, service 
+associated documentation, remains the exclusive property of AMEFORGE. This
+License does not grant you any rights to trademarks, service
 marks, or trade names of the Licensor.
 
 3.2 NO WARRANTY (Community License)
@@ -104,9 +104,9 @@ provisions.
 To obtain a Commercial License or for any licensing inquiries, please contact:
 
     Mike Amega
-    Ame Web Studio
-    
-    
+    AMEFORGE
+
+
     Email: amewebstudio35@gmail.com
     GitHub: https://github.com/Volgat
 

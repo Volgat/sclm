@@ -5,7 +5,7 @@ SCLM: Stateful Coherent Language Model
 A library for adding persistent latent memory to transformer language models.
 
 PROPRIETARY SOFTWARE - DUAL LICENSE MODEL
-Copyright (c) 2025 Mike Amega (Ame Web Studio). All Rights Reserved.
+Copyright (c) 2025 AMEFORGE. All Rights Reserved.
 
 Community License (Free):
 - Personal & hobbyist projects
@@ -37,15 +37,15 @@ Quick Start:
 >>> model.reset_state()
 >>> output = model.generate("The wizard Elara discovered", max_new_tokens=50)
 
-Author: Mike Amega (Ame Web Studio)
+Author: Mike Amega, AMEFORGE
 License: BSL-1.1 (Business Source License)
 """
 
-__version__ = "0.1.2"
-__author__ = "Mike Amega"
+__version__ = "0.1.3"
+__author__ = "AMEFORGE"
 __email__ = "info@amewebstudio.com"
 __license__ = "BSL-1.1"
-__copyright__ = "Copyright (c) 2025 Mike Amega (Ame Web Studio). All Rights Reserved."
+__copyright__ = "Copyright (c) 2025 AMEFORGE. All Rights Reserved."
 
 from .config import SCLMConfig
 from .model import SCLMModel, SCLMModelV2

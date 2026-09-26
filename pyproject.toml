@@ -4,15 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "saclm"
-version = "0.1.2"
+version = "0.1.3"
 description = "SCLM: Stateful Coherent Language Model - Persistent memory for transformers"
 readme = "README.md"
 license = {text = "BSL-1.1"}
 authors = [
-    {name = "Mike Amega", email = "contact@amewebstudio.com"}
+    {name = "AMEFORGE", email = "contact@amewebstudio.com"}
 ]
 maintainers = [
-    {name = "Mike Amega", email = "contact@amewebstudio.com"}
+    {name = "AMEFORGE", email = "contact@amewebstudio.com"}
 ]
 keywords = [
     "nlp",
@@ -30,7 +30,7 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
+    "License :: Other/Proprietary License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",

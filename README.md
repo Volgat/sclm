@@ -60,6 +60,15 @@ model = SCLMModel.from_pretrained(
     "amewebstudio/ananke-sclm",     # Pre-trained SCLM model
     load_in_4bit=True  # Optional: 4-bit quantization
 )
+```
+
+> `ananke-sclm` is a demo checkpoint, not a requirement. `from_pretrained()` accepts
+> **any** HuggingFace causal LM — swap in your own model name and it will load with
+> a freshly-initialized PACER module. That module starts untrained, so you'll need to
+> fine-tune it before the coherence benefit shows up (see [Limitations](docs/paper.md#8-limitations)).
+> `ananke-sclm` ships pre-trained specifically so this Quick Start works out of the box.
+
+```python
 
 # Start new conversation
 model.reset_state()
@@ -296,7 +305,7 @@ print(output)
   title={SCLM: Stateful Coherent Language Models with PACER Architecture},
   author={Amega, Mike},
   year={2025},
-  note={Ame Web Studio - Proprietary}
+  note={AMEFORGE - Proprietary}
 }
 ```
 
@@ -304,11 +313,11 @@ print(output)
 
 **Business Source License 1.1 (BSL-1.1)** - See [LICENSE](LICENSE) for details.
 
-Copyright (c) 2025 Mike Amega (Ame Web Studio). All Rights Reserved.
+Copyright (c) 2025 AMEFORGE. All Rights Reserved.
 
 ## 👤 Author
 
-**Mike Amega** - Ame Web Studio  
+**Mike Amega** - AMEFORGE  
 📧 [amewebstudio35@gmail.com](mailto:amewebstudio35@gmail.com)  
 🔗 [github.com/Volgat](https://github.com/Volgat)
 
