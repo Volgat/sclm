@@ -48,7 +48,7 @@ The company specializes in:
 ## Research Focus
 Current research includes:
 - SCLM: Stateful Coherent Language Models
-- EARCP: Novel ensemble architecture
+- PACER: Novel ensemble architecture
 - NEUROGENESIS: Autonomous neural network growth
 
 ## Contact

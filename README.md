@@ -34,7 +34,7 @@
 - 🧠 **Persistent Memory**: State that evolves across conversation turns
 - 🎯 **Entity Coherence**: Maintains context about characters, places, objects
 - ✏️ **Edit Mode**: Make local changes without affecting global memory
-- ⚡ **Lightweight**: Only ~2-5% additional parameters (EARCP architecture)
+- ⚡ **Lightweight**: Only ~2-5% additional parameters (PACER architecture)
 - 🔌 **Easy Integration**: Works with any HuggingFace transformer
 
 ## 📦 Installation
@@ -74,14 +74,14 @@ print(output)
 # "One day, Elara decided to take Nimbus on a journey through Silverwood..."
 ```
 
-## 📊 Architecture: EARCP
+## 📊 Architecture: PACER
 
-SCLM uses the **EARCP** architecture (patent pending):
+SCLM uses the **PACER** architecture:
 
 ![SCLM Architecture](assets/sclm_architecture_new.png)
 
 ```
-EARCP = Encapsulation + Alignment + Revision + Coherence + Propagation
+PACER = Propagation + Alignment + Coherence + Encapsulation + Revision
 ```
 
 | Component | Function |
@@ -192,7 +192,7 @@ config = get_preset("mistral-7b")  # or "llama-7b", "phi-2", "tiny"
 
 ## 🔬 Benchmarks
 
-| Model | EARCP Params | Overhead | Entity Retention |
+| Model | PACER Params | Overhead | Entity Retention |
 |-------|--------------|----------|------------------|
 | Mistral-7B | 91.7M | 2.4% | 85% |
 | LLaMA-7B | 91.7M | 2.4% | 83% |
@@ -277,7 +277,7 @@ output = model.generate("Un jour, Élara décida de", max_new_tokens=50)
 print(output)
 ```
 
-## Architecture EARCP
+## Architecture PACER
 
 | Composant | Fonction |
 |-----------|----------|
@@ -293,7 +293,7 @@ print(output)
 
 ```bibtex
 @article{amega2025sclm,
-  title={SCLM: Stateful Coherent Language Models with EARCP Architecture},
+  title={SCLM: Stateful Coherent Language Models with PACER Architecture},
   author={Amega, Mike},
   year={2025},
   note={Ame Web Studio - Proprietary}

@@ -31,7 +31,7 @@ class SCLMConfig:
     """
     Configuration for SCLM (Stateful Coherent Language Model).
     
-    This configuration controls the EARCP module that adds persistent
+    This configuration controls the PACER module that adds persistent
     memory capabilities to transformer language models.
     
     Attributes
@@ -89,7 +89,7 @@ class SCLMConfig:
     hidden_size: int = 4096
     num_hidden_layers: int = 32
     
-    # EARCP parameters
+    # PACER parameters
     latent_state_dim: int = 256
     n_experts: int = 2
     n_coherence_heads: int = 4
@@ -189,7 +189,7 @@ class SCLMConfig:
     
     def estimate_parameters(self) -> Dict[str, int]:
         """
-        Estimate the number of parameters for EARCP module.
+        Estimate the number of parameters for PACER module.
         
         Returns
         -------

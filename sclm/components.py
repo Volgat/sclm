@@ -1,9 +1,9 @@
 """
-SCLM Components - EARCP Architecture
+SCLM Components - PACER Architecture
 =====================================
 
-This module contains the core components of the EARCP 
-(Encapsulation, Alignment, Revision, Coherence, Propagation) architecture.
+This module contains the core components of the PACER 
+(Propagation, Alignment, Coherence, Encapsulation, Revision) architecture.
 
 Components:
 -----------
@@ -11,7 +11,7 @@ Components:
 - Encapsulation: GRU-style state update
 - CoherenceExperts: Mixture of Experts for consistency
 - DriftRevision: Drift detection and correction
-- EARCPModule: Complete EARCP module
+- PACERModule: Complete PACER module
 
 Architecture Diagram:
 --------------------
@@ -457,11 +457,11 @@ class DriftRevision(nn.Module):
         return output, metrics
 
 
-class EARCPModule(nn.Module):
+class PACERModule(nn.Module):
     """
-    Complete EARCP module combining all components.
+    Complete PACER module combining all components.
     
-    EARCP = Encapsulation + Alignment + Revision + Coherence + Propagation
+    PACER = Propagation + Alignment + Coherence + Encapsulation + Revision
     
     This module provides:
     - State injection into transformer layers (Alignment/Propagation)
@@ -491,15 +491,15 @@ class EARCPModule(nn.Module):
     -------
     >>> from sclm import SCLMConfig
     >>> config = SCLMConfig(hidden_size=4096, latent_state_dim=256)
-    >>> earcp = EARCPModule(config)
+    >>> pacer = PACERModule(config)
     >>> 
     >>> # Inject state at layer 8
     >>> hidden = torch.randn(1, 10, 4096)
     >>> state = torch.randn(1, 256)
-    >>> injected = earcp.inject_state(hidden, state, layer_idx=8)
+    >>> injected = pacer.inject_state(hidden, state, layer_idx=8)
     >>> 
     >>> # Update state
-    >>> new_state, enhanced, metrics = earcp.update_state(hidden, state)
+    >>> new_state, enhanced, metrics = pacer.update_state(hidden, state)
     """
     
     def __init__(self, config: SCLMConfig):
@@ -564,7 +564,7 @@ class EARCPModule(nn.Module):
         edit_mode: bool = False
     ) -> Tuple[torch.Tensor, torch.Tensor, Dict[str, Any]]:
         """
-        Full EARCP forward pass: update state and enhance hidden states.
+        Full PACER forward pass: update state and enhance hidden states.
         
         Parameters
         ----------

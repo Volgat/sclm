@@ -5,10 +5,28 @@ All notable changes to SCLM will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-09-26
+
+### Changed
+- **Renamed EARCP → PACER** (Propagation, Alignment, Coherence, Encapsulation,
+  Revision). The old name collided with an unrelated architecture
+  (Expert Aggregation with Regret Control and Performance tracking, published
+  separately with an arXiv paper) — same acronym, two unrelated inventions.
+  `PACERModule` replaces `EARCPModule`; `sclm.pacer` replaces `sclm.earcp`.
+- Removed the "(patent pending)" claim from the README — no filing is in
+  progress. The dual license (free under $100K revenue, commercial license
+  required above) remains the operative protection.
+
+### Fixed
+- `SCLMModel.from_pretrained()` now falls back to a legacy
+  `earcp_weights.pt` checkpoint file if `pacer_weights.pt` is not found, so
+  checkpoints saved before this rename (e.g. pre-v0.1.2 releases) still load
+  without re-training or manual renaming.
+
 ## [2.0.0] - 2025-12-16
 
 ### Added
-- **EARCP Architecture**: Complete implementation of Encapsulation, Alignment, Revision, Coherence, Propagation
+- **PACER Architecture**: Complete implementation of Propagation, Alignment, Coherence, Encapsulation, Revision
 - **SCLMModel**: High-level API for easy usage
 - **SCLMModelV2**: Low-level implementation with full control
 - **Option B Architecture**: Deep integration variant with attention/FFN injection
@@ -44,7 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [2.1.0] - Planned
 - NEUROGENESIS: Dynamic state dimension growth
-- Training scripts for EARCP fine-tuning
+- Training scripts for PACER fine-tuning
 - Gradio demo application
 
 ### [3.0.0] - Future

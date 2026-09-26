@@ -18,7 +18,7 @@ from sclm.components import (
     Encapsulation,
     CoherenceExperts,
     DriftRevision,
-    EARCPModule,
+    PACERModule,
 )
 
 
@@ -220,8 +220,8 @@ class TestDriftRevision:
         assert 0 <= metrics['drift_score'] <= 1
 
 
-class TestEARCPModule:
-    """Tests for complete EARCP module."""
+class TestPACERModule:
+    """Tests for complete PACER module."""
     
     @pytest.fixture
     def config(self):
@@ -234,37 +234,37 @@ class TestEARCPModule:
         )
     
     @pytest.fixture
-    def earcp(self, config):
-        return EARCPModule(config)
+    def pacer(self, config):
+        return PACERModule(config)
     
-    def test_inject_state(self, earcp):
+    def test_inject_state(self, pacer):
         """Test state injection."""
         hidden = torch.randn(1, 10, 256)
         state = torch.randn(1, 64)
         
         # Layer 0 should inject
-        output = earcp.inject_state(hidden, state, layer_idx=0)
+        output = pacer.inject_state(hidden, state, layer_idx=0)
         assert output.shape == hidden.shape
         
         # Layer 5 should not inject (not in config)
-        output = earcp.inject_state(hidden, state, layer_idx=5)
+        output = pacer.inject_state(hidden, state, layer_idx=5)
         assert torch.equal(output, hidden)
     
-    def test_update_state(self, earcp):
-        """Test full EARCP update."""
+    def test_update_state(self, pacer):
+        """Test full PACER update."""
         hidden = torch.randn(1, 10, 256)
         state = torch.zeros(1, 64)
         
-        new_state, enhanced, metrics = earcp.update_state(hidden, state)
+        new_state, enhanced, metrics = pacer.update_state(hidden, state)
         
         assert new_state.shape == state.shape
         assert enhanced.shape == hidden.shape
         assert 'state_norm' in metrics
         assert 'state_change' in metrics
     
-    def test_get_num_params(self, earcp):
+    def test_get_num_params(self, pacer):
         """Test parameter counting."""
-        n_params = earcp.get_num_params()
+        n_params = pacer.get_num_params()
         assert n_params > 0
 
 
@@ -272,7 +272,7 @@ class TestIntegration:
     """Integration tests."""
     
     def test_full_pipeline(self):
-        """Test full EARCP pipeline."""
+        """Test full PACER pipeline."""
         config = SCLMConfig(
             hidden_size=128,
             latent_state_dim=32,
@@ -280,7 +280,7 @@ class TestIntegration:
             state_injection_layers=[0],
             num_hidden_layers=2
         )
-        earcp = EARCPModule(config)
+        pacer = PACERModule(config)
         
         # Simulate multiple turns
         state = torch.zeros(1, 32)
@@ -290,10 +290,10 @@ class TestIntegration:
             hidden = torch.randn(1, 10, 128)
             
             # Injection
-            hidden = earcp.inject_state(hidden, state, layer_idx=0)
+            hidden = pacer.inject_state(hidden, state, layer_idx=0)
             
             # Update
-            state, hidden, _ = earcp.update_state(hidden, state)
+            state, hidden, _ = pacer.update_state(hidden, state)
             states.append(state.clone())
         
         # State should evolve

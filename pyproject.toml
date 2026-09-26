@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "saclm"
-version = "0.1.1"
+version = "0.1.2"
 description = "SCLM: Stateful Coherent Language Model - Persistent memory for transformers"
 readme = "README.md"
 license = {text = "BSL-1.1"}
@@ -21,7 +21,7 @@ keywords = [
     "memory",
     "stateful",
     "coherence",
-    "earcp",
+    "pacer",
     "deep-learning",
     "pytorch",
     "huggingface"

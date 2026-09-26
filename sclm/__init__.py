@@ -24,7 +24,7 @@ Features:
 - Persistent state across conversation turns
 - Entity coherence in long generation
 - Edit mode for local changes without global drift
-- Lightweight EARCP architecture (~2-5% overhead)
+- Lightweight PACER architecture (~2-5% overhead)
 
 Quick Start:
 ------------
@@ -41,7 +41,7 @@ Author: Mike Amega (Ame Web Studio)
 License: BSL-1.1 (Business Source License)
 """
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __author__ = "Mike Amega"
 __email__ = "info@amewebstudio.com"
 __license__ = "BSL-1.1"
@@ -50,7 +50,7 @@ __copyright__ = "Copyright (c) 2025 Mike Amega (Ame Web Studio). All Rights Rese
 from .config import SCLMConfig
 from .model import SCLMModel, SCLMModelV2
 from .components import (
-    EARCPModule,
+    PACERModule,
     StateInjectionLayer,
     Encapsulation,
     CoherenceExperts,
@@ -72,7 +72,7 @@ __all__ = [
     "SCLMModel",
     "SCLMModelV2",
     # Components
-    "EARCPModule",
+    "PACERModule",
     "StateInjectionLayer",
     "Encapsulation",
     "CoherenceExperts",

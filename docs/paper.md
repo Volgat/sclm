@@ -1,4 +1,4 @@
-# SCLM: Stateful Coherent Language Models with EARCP Architecture
+# SCLM: Stateful Coherent Language Models with PACER Architecture
 
 **Mike Amega**  
 Ame Web Studio  
@@ -8,7 +8,7 @@ December 2025
 
 ## Abstract
 
-We introduce **SCLM** (Stateful Coherent Language Model), a novel architecture that augments transformer language models with persistent latent memory. Unlike traditional transformers that process each input independently, SCLM maintains a learned latent state that evolves across conversation turns, enabling improved entity coherence, narrative consistency, and long-range memory without expanding the context window. Our key contribution is the **EARCP** (Encapsulation, Alignment, Revision, Coherence, Propagation) module, a lightweight addition (~2-5% parameter overhead) that can be applied to any pretrained transformer. We demonstrate that SCLM achieves 85% entity retention across multi-turn conversations compared to 45% for baseline models, while maintaining generation quality.
+We introduce **SCLM** (Stateful Coherent Language Model), a novel architecture that augments transformer language models with persistent latent memory. Unlike traditional transformers that process each input independently, SCLM maintains a learned latent state that evolves across conversation turns, enabling improved entity coherence, narrative consistency, and long-range memory without expanding the context window. Our key contribution is the **PACER** (Propagation, Alignment, Coherence, Encapsulation, Revision) module, a lightweight addition (~2-5% parameter overhead) that can be applied to any pretrained transformer. We demonstrate that SCLM achieves 85% entity retention across multi-turn conversations compared to 45% for baseline models, while maintaining generation quality.
 
 **Keywords:** Language Models, Memory, Transformers, Coherence, Neural Architecture
 
@@ -32,7 +32,7 @@ We propose SCLM, which addresses these issues through a persistent latent state 
 
 ### 1.1 Contributions
 
-- A novel **EARCP architecture** for adding persistent memory to transformers
+- A novel **PACER architecture** for adding persistent memory to transformers
 - **State injection mechanism** that minimally perturbs base model behavior
 - **Edit mode** allowing local changes without global memory updates
 - Empirical validation showing 85% entity retention vs 45% baseline
@@ -63,7 +63,7 @@ Mamba (Gu & Dao, 2023) and other SSMs offer linear-time alternatives to attentio
 
 ### 3.1 Overview
 
-SCLM wraps a pretrained transformer $f_\theta$ with an EARCP module $g_\phi$:
+SCLM wraps a pretrained transformer $f_\theta$ with an PACER module $g_\phi$:
 
 $$
 y = \text{SCLM}(x, s) = f_\theta(x \mid g_\phi(s))
@@ -74,9 +74,9 @@ Where:
 - $s \in \mathbb{R}^d$ is the latent state (typically $d=256$)
 - $g_\phi$ provides state-conditioned modifications to $f_\theta$
 
-### 3.2 EARCP Module
+### 3.2 PACER Module
 
-EARCP consists of five components:
+PACER consists of five components:
 
 #### 3.2.1 Encapsulation (E)
 
@@ -184,7 +184,7 @@ def make_hook(layer_idx):
     def hook(module, input, output):
         hidden = output[0]
         state = self.latent_state.expand(hidden.size(0), -1)
-        injected = self.earcp.inject_state(hidden, state, layer_idx)
+        injected = self.pacer.inject_state(hidden, state, layer_idx)
         return (injected,) + output[1:]
     return hook
 ```
@@ -204,7 +204,7 @@ Key hyperparameters:
 ### 4.4 Parameter Efficiency
 
 For Mistral-7B (3.75B params):
-- EARCP adds 91.7M parameters (2.4% overhead)
+- PACER adds 91.7M parameters (2.4% overhead)
 - Memory requirement increase: ~180MB (FP16)
 
 ---
@@ -318,8 +318,8 @@ State preservation when editing:
 
 ## 8. Limitations
 
-1. **Training Required**: EARCP requires fine-tuning for optimal performance
-2. **Memory Overhead**: Additional 180MB for state and EARCP weights
+1. **Training Required**: PACER requires fine-tuning for optimal performance
+2. **Memory Overhead**: Additional 180MB for state and PACER weights
 3. **Latency**: ~5% inference slowdown from hook overhead
 4. **Interpretability**: Latent state is not directly interpretable
 
@@ -336,7 +336,7 @@ State preservation when editing:
 
 ## 10. Conclusion
 
-SCLM demonstrates that persistent latent memory can be added to transformer language models with minimal overhead while significantly improving entity coherence and narrative consistency. The EARCP architecture provides a practical, efficient solution applicable to any pretrained transformer.
+SCLM demonstrates that persistent latent memory can be added to transformer language models with minimal overhead while significantly improving entity coherence and narrative consistency. The PACER architecture provides a practical, efficient solution applicable to any pretrained transformer.
 
 ---
 

@@ -150,7 +150,7 @@ def run_info(args):
         print(f"Injection Layers: {config.state_injection_layers}")
         print(f"Alpha: {config.alpha_inject}")
         print(f"Experts: {config.n_experts}")
-        print(f"EARCP Parameters: {params['total_millions']:.1f}M")
+        print(f"PACER Parameters: {params['total_millions']:.1f}M")
     else:
         print(f"Model: {args.model}")
         print("(Load model for detailed info)")

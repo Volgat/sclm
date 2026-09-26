@@ -91,7 +91,7 @@ def demo_2_forward_pass(model: SCLM):
     # Global metrics
     if output['global_metrics']:
         gm = output['global_metrics']
-        print(f"\n📊 Global EARCP Metrics:")
+        print(f"\n📊 Global PACER Metrics:")
         print(f"   Coherence: {gm['coherence']:.4f}")
         print(f"   Alignment: {gm['alignment'].mean().item():.4f}")
         print(f"   Drift: {gm['drift'].mean().item():.4f}")
@@ -99,7 +99,7 @@ def demo_2_forward_pass(model: SCLM):
         print(f"   Expert Weights: {gm['weights'].tolist()}")
     
     # Block metrics
-    print(f"\n📊 Block Metrics (EARCP blocks only):")
+    print(f"\n📊 Block Metrics (PACER blocks only):")
     for i, bm in enumerate(output['block_metrics']):
         print(f"   Block {i}: coherence={bm['coherence']:.4f}, alignment={bm['alignment'].mean().item():.4f}")
     
@@ -337,7 +337,7 @@ def run_all_demos():
     print("""
 ✅ SCLM Features Demonstrated:
    1. Model creation with full configuration
-   2. Forward pass with EARCP metrics
+   2. Forward pass with PACER metrics
    3. Text generation with persistent state
    4. Edit mode for local modifications
    5. State persistence verification

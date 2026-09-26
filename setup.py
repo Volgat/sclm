@@ -18,7 +18,7 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 # Read version
-version = "0.1.1"
+version = "0.1.2"
 
 setup(
     name="saclm",
@@ -86,7 +86,7 @@ setup(
     },
     keywords=[
         "nlp", "transformers", "language-model", "memory", 
-        "stateful", "coherence", "earcp", "deep-learning", 
+        "stateful", "coherence", "pacer", "deep-learning", 
         "pytorch", "huggingface"
     ],
     zip_safe=False,

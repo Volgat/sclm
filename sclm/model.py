@@ -2,7 +2,7 @@
 SCLM Model
 ==========
 
-Main SCLM model classes that wrap HuggingFace transformers with EARCP memory.
+Main SCLM model classes that wrap HuggingFace transformers with PACER memory.
 
 Classes:
 --------
@@ -36,14 +36,14 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from .config import SCLMConfig
-from .components import EARCPModule
+from .components import PACERModule
 
 
 class SCLMModelV2(nn.Module):
     """
     Low-level SCLM implementation with full control.
     
-    Wraps a HuggingFace transformer with EARCP module for persistent memory.
+    Wraps a HuggingFace transformer with PACER module for persistent memory.
     Use this class when you need fine-grained control over the model.
     
     Parameters
@@ -59,8 +59,8 @@ class SCLMModelV2(nn.Module):
         Configuration
     base_model : nn.Module
         Underlying transformer
-    earcp : EARCPModule
-        EARCP memory module
+    pacer : PACERModule
+        PACER memory module
     latent_state : torch.Tensor
         Current persistent state
     state_frozen : bool
@@ -87,8 +87,8 @@ class SCLMModelV2(nn.Module):
         self.model_device = next(base_model.parameters()).device
         self.model_dtype = next(base_model.parameters()).dtype
         
-        # Create EARCP module on same device/dtype
-        self.earcp = EARCPModule(config).to(self.model_device).to(self.model_dtype)
+        # Create PACER module on same device/dtype
+        self.pacer = PACERModule(config).to(self.model_device).to(self.model_dtype)
         
         # Initialize latent state
         self.latent_state = torch.zeros(
@@ -119,12 +119,12 @@ class SCLMModelV2(nn.Module):
                     
                     # Move injector if needed
                     inj_key = str(layer_idx)
-                    inj = self.earcp.state_injectors[inj_key]
+                    inj = self.pacer.state_injectors[inj_key]
                     if next(inj.parameters()).device != hidden.device:
-                        self.earcp.state_injectors[inj_key] = inj.to(hidden.device)
+                        self.pacer.state_injectors[inj_key] = inj.to(hidden.device)
                     
                     # Apply injection
-                    injected = self.earcp.state_injectors[inj_key](
+                    injected = self.pacer.state_injectors[inj_key](
                         hidden, state, self.config.alpha_inject
                     )
                     return (injected,) + output[1:]
@@ -205,7 +205,7 @@ class SCLMModelV2(nn.Module):
         -------
         Dict[str, Any]
             - 'logits': Output logits
-            - 'earcp_metrics': EARCP metrics
+            - 'pacer_metrics': PACER metrics
             - 'state': Current state
         """
         if attention_mask is None:
@@ -223,15 +223,15 @@ class SCLMModelV2(nn.Module):
         hidden = base_out.hidden_states[-1]
         B = hidden.size(0)
         
-        # Move EARCP if needed
-        if next(self.earcp.encapsulation.parameters()).device != hidden.device:
-            self.earcp = self.earcp.to(hidden.device)
+        # Move PACER if needed
+        if next(self.pacer.encapsulation.parameters()).device != hidden.device:
+            self.pacer = self.pacer.to(hidden.device)
         
         # Get state on correct device
         state = self.latent_state.to(hidden.device, hidden.dtype).expand(B, -1)
         
-        # EARCP update
-        new_state, enhanced, metrics = self.earcp.update_state(
+        # PACER update
+        new_state, enhanced, metrics = self.pacer.update_state(
             hidden, state, self.edit_mode
         )
         
@@ -250,7 +250,7 @@ class SCLMModelV2(nn.Module):
         
         return {
             'logits': logits,
-            'earcp_metrics': metrics,
+            'pacer_metrics': metrics,
             'state': self.latent_state.clone()
         }
     
@@ -459,7 +459,7 @@ class SCLMModel:
         **kwargs
     ) -> "SCLMModel":
         """
-        Load SCLM from saved checkpoint with EARCP weights.
+        Load SCLM from saved checkpoint with PACER weights.
         
         Parameters
         ----------
@@ -473,7 +473,7 @@ class SCLMModel:
         Returns
         -------
         SCLMModel
-            Loaded model with EARCP weights
+            Loaded model with PACER weights
         """
         path = Path(checkpoint_path)
         
@@ -487,13 +487,22 @@ class SCLMModel:
         # Load base model + SCLM
         model = cls.from_pretrained(config.base_model_name, config=config, **kwargs)
         
-        # Load EARCP weights
-        earcp_path = path / "earcp_weights.pt"
-        if earcp_path.exists():
-            state_dict = torch.load(earcp_path, map_location='cpu')
-            model.model.earcp.load_state_dict(state_dict)
-            print(f"✅ Loaded EARCP weights from {earcp_path}")
-        
+        # Load PACER weights. "pacer_weights.pt" is the current filename;
+        # "earcp_weights.pt" is kept as a fallback so checkpoints saved
+        # before the v0.1.2 rename (PACER was previously called EARCP)
+        # still load without re-training or manual renaming.
+        pacer_path = path / "pacer_weights.pt"
+        legacy_earcp_path = path / "earcp_weights.pt"
+        if pacer_path.exists():
+            state_dict = torch.load(pacer_path, map_location='cpu')
+            model.model.pacer.load_state_dict(state_dict)
+            print(f"✅ Loaded PACER weights from {pacer_path}")
+        elif legacy_earcp_path.exists():
+            state_dict = torch.load(legacy_earcp_path, map_location='cpu')
+            model.model.pacer.load_state_dict(state_dict)
+            print(f"✅ Loaded PACER weights from legacy checkpoint {legacy_earcp_path} "
+                  f"(pre-v0.1.2 naming — re-save with .save_pretrained() to migrate to pacer_weights.pt)")
+
         return model
     
     def reset_state(self) -> None:
@@ -538,7 +547,7 @@ class SCLMModel:
         with torch.no_grad():
             out = self.model(ids, attention_mask=mask)
         
-        return out['earcp_metrics']
+        return out['pacer_metrics']
     
     def generate(
         self,
@@ -634,9 +643,9 @@ class SCLMModel:
         # Save config
         self.model.config.save(path / "sclm_config.json")
         
-        # Save EARCP weights
-        earcp_state = {k: v.cpu() for k, v in self.model.earcp.state_dict().items()}
-        torch.save(earcp_state, path / "earcp_weights.pt")
+        # Save PACER weights
+        pacer_state = {k: v.cpu() for k, v in self.model.pacer.state_dict().items()}
+        torch.save(pacer_state, path / "pacer_weights.pt")
         
         # Save tokenizer
         self.tokenizer.save_pretrained(path)
@@ -644,11 +653,11 @@ class SCLMModel:
         print(f"✅ Checkpoint saved to {path}")
     
     def __repr__(self) -> str:
-        params = self.model.earcp.get_num_params()
+        params = self.model.pacer.get_num_params()
         return (
             f"SCLMModel(\n"
             f"  base_model={self.model.config.base_model_name},\n"
-            f"  earcp_params={params/1e6:.1f}M,\n"
+            f"  pacer_params={params/1e6:.1f}M,\n"
             f"  state_dim={self.model.config.latent_state_dim},\n"
             f"  state_norm={self.state_norm:.2f}\n"
             f")"
